@@ -23,11 +23,13 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+        sstage('SonarQube Analysis') {
             steps {
                 dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
-                    withSonarQubeEnv('sonar-server') {
-                        sh "mvn sonar:sonar -Dsonar.projectKey=YashAditya1212_Jenkins_learnings -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=https://sonarcloud.io"
+                    // This explicitly pulls the 'sonar-token' credential you made
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        // We added -Dsonar.token=\$SONAR_TOKEN to force the authentication
+                        sh "mvn sonar:sonar -Dsonar.projectKey=YashAditya1212_Jenkins_learnings -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=\$SONAR_TOKEN"
                     }
                 }
             }
