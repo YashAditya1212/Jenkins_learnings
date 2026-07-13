@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        sstage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
                     // This explicitly pulls the 'sonar-token' credential you made
